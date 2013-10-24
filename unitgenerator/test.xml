@@ -1,0 +1,16 @@
+<article>
+	<content>
+		<item attr="src" attrVal="/chrome/mobile/images/spdy-proxy.png"
+			tag="img" />
+		<item tag="text">The proxy server receives the request initiated on the
+			mobile device,initiates a request for the required resource on your
+			behalf,and then optimizes each asset before delivering it back to the
+			client.The content optimization is performed by our</item>
+		<item attr="href" attrVal="https://developers.google.com/speed/pagespeed/"
+			tag="a">open-source PageSpeed libraries</item>
+		<item tag="text">,which are specifically tuned for the</item>
+		<item attr="href"
+			attrVal="https://www.google.com/intl/en/chrome/browser/mobile/" tag="a">Chrome
+			for Android</item>
+	</content>
+</article>

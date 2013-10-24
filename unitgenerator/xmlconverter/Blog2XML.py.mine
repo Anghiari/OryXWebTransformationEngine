@@ -1,0 +1,51 @@
+'''
+Created on May 24, 2013
+
+@author: Pahan
+'''
+
+import xml.etree.ElementTree as ET
+from unitgenerator.utilities.PageContentTypes import Text2ContentMapper
+import constants.Constants as const
+
+class Blog2XML():
+
+    
+    blogarticle = None
+    
+    def __init__(self, bloga):
+        self.blogarticle = bloga
+        
+    def generateXML(self, statuscode, favicon, mobileurl=''):
+        
+        oryx = ET.Element("oryx")
+         
+        http = ET.SubElement(oryx, "HTTP")
+        code = ET.SubElement(http, "code")
+        code.text = str(statuscode)
+         
+        # A error message should be printed here - to do
+        message = ET.SubElement(http, "message")
+        if(statuscode == const.HAS_MOBILE_SITE):
+            message.text = mobileurl
+        else:
+            message.text = const.messages.get(statuscode, 'Unkonwn Error Code!')
+            
+        tree = ET.ElementTree(oryx)
+        
+        if(statuscode == const.HTTP_OK):
+            fav = ET.SubElement(oryx, "favicon")
+            fav.text = favicon
+            article = ET.SubElement(oryx, "article")
+            acontent = ET.SubElement(article, "content")
+            for _ in xrange(self.blogarticle.get_length()):
+                c = self.blogarticle.get_item()
+                field = ET.SubElement(acontent, "item")
+                field.set("tag", c.get_tag())
+                if c.get_attr():
+                    field.set("attr", Text2ContentMapper[c.get_tag()])
+                    field.set("attrVal", c.get_attr())
+                field.text = c.get_text()            
+        
+        return tree
+        
