@@ -1,0 +1,64 @@
+<html>
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Pathway+Gothic+One' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="{{ static_url("app/scripts/jquery-1.8.3.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("app/scripts/XMLReader.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("app/scripts/jquery.xml2json.js") }}"></script>
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ static_url("main2.css") }}">
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ static_url("app/css/main.css") }}">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	
+</head>
+<body>
+	<div class="mainCont">
+		<div class="welcome">
+		<p>Welcome to <span>OryX</span> Web Transformation System</p>
+		</div>
+		
+		<div class="search">
+			<img src="{{ static_url("images/logo.png") }}"/>
+			<p class="tip">Enter URL for Transformation</p>
+			<input name="name" id="name" type="text" value="">
+			<div class="searchBtn">
+				<p><a href="#" onclick="showDemo();">T R A N S F O R M</a></p>
+			</div>
+		</div>
+
+		
+		<table>
+			<tr>
+				<th>Introduction</th>
+				<th>API Services</th>
+				<th>Billing</th>
+			</tr>
+			<tr>
+				<td>OryX web transformation system detects useful information in a given web page and output that content in a well structured manner. </td>
+				<td>We provide powerful, customizable and extensible API services for web transformation</td>
+				<td>Several packages to access our API services and API accessibility rights </td>
+			</tr>
+			<tr class="links">
+				<td><a href="#">Read More ...</a></td>
+				<td><a href="#">See Examples ...</a></td>
+				<td><a href="#">Get API KEY ...</a></td>
+			</tr>
+	</table>
+	
+	<div class="footer">
+	<p>Powered by <span>OryX</span> - Team Anghiari </p>
+	</div>
+	</div>
+	
+	<div class="Container" id="demo">
+		<div class="mainContainer">
+		<p class="closeBtn"><a href="#" onclick="closeDemo();"> X </a></p>
+		<div class="main" id="mainC">
+		</div>
+				
+		</div>	
+		</div>
+		
+		<script type="text/javascript"  src="{{ static_url("app/scripts/core.js") }}"></script>
+		<script type="text/javascript" src="{{ static_url("app/app.js") }}"></script>
+	
+</body>
+</head>

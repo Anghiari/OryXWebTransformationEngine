@@ -1,0 +1,36 @@
+'''
+Created on May 23, 2013
+
+@author: acer
+'''
+
+from readability.readability import Document
+import urllib, urlparse
+from bs4 import BeautifulSoup
+import re
+
+class HTMLPage:
+    _html = None
+    soup = None
+    url = ''
+    
+    def __init__(self,rawPage, siteurl):
+        self._html = rawPage.read()
+        self.soup = BeautifulSoup(self._html)
+        self.url = siteurl
+    
+    def extract_mainarticle(self):
+        readable_article = Document(self._html).summary()
+        return readable_article
+    
+    def extract_maintitle(self, url):
+        html = urllib.urlopen(url).read()
+        readable_title = Document(html).short_title() 
+        
+        return readable_title
+    
+    def getFavicon(self):
+        icon_link = self.soup.find("link", rel=re.compile('.*icon.*'))
+        if(icon_link is not None  and icon_link.has_key('href')):
+            return urlparse.urljoin(self.url, str(icon_link['href']))
+        return ''
