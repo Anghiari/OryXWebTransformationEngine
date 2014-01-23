@@ -5,6 +5,7 @@ Created on Aug 13, 2013
 '''
 
 import pymongo
+from constants.Constants import DB_PORT, DB_URL
 
 class TransformedCollectionService():
 
@@ -12,7 +13,7 @@ class TransformedCollectionService():
     transformedcollection = None
     
     def __init__(self):
-        self.client = pymongo.MongoClient("192.248.8.246:27017", 27017)
+        self.client = pymongo.MongoClient(DB_URL, DB_PORT)
         self.transformedcollection = self.client.OryX.TransformedUrlCollection
         
         

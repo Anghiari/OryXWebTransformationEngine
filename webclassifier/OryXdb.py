@@ -11,9 +11,13 @@ from collections import deque
 import json
 from UrlDocuments import URLDocument
 
-DB_URL = "192.248.8.246"
+DB_URL = "192.248.15.233"
 DB_PORT = 27017
 
+#===============================================================================
+# UrlCollectionService
+# Service wrapper to the db collection 
+#===============================================================================
 class UrlCollectionService():
 
     client = None
@@ -32,6 +36,10 @@ class UrlCollectionService():
     def getFronendCollection(self):
         return self.frontendcollection
     
+    #===========================================================================
+    # insertURLFromJson
+    # insert URL from the json list
+    #===========================================================================
     def insertURLFromJson(self,jsonlist):
         for item in jsonlist:
             print item
@@ -41,6 +49,11 @@ class UrlCollectionService():
                 print e
         return True
 
+    #===========================================================================
+    # insertURLDocument
+    # @param urldoc: UrlDocument object
+    # Stores in the UrlCollection database  
+    #===========================================================================
     def insertURLDocument(self,urldoc):
         if(self.getUrlType(urldoc.url) is False):
             item={"url":urldoc.url,"classification":urldoc.classification, "maintag" : urldoc.maintag, "tags": urldoc.tags}
@@ -57,12 +70,22 @@ class UrlCollectionService():
             print urldoc.url+" :Possible duplicate insert"
         
     def getUrlList(self,classification):
-        urllist=self.urlcollection.find({"classification" : classification})
+        urllist=list(self.urlcollection.find({"classification" : classification}))
         return urllist
     
-    def getUrlListFromCol(self,classification,collection):
-        urllist=collection.find({"classification" : classification})
+    def getUrlListFromCol(self,classification, maintag, collection):
+        urllist=list(collection.find({"classification" : classification, "maintag":maintag}))
         return urllist
+    
+    def getUrlDocListFromCol(self,classification, maintag, collection):
+        urllist=list(collection.find({"classification" : classification, "maintag":maintag}))
+        
+        urldocList= deque()
+        for item in urllist:
+            urldoc= URLDocument(item["url"],item["classification"], item["maintag"], item["tags"])
+            urldocList.append(urldoc)
+  
+        return urldocList
     
     def getUrlType(self,url):
         item=self.urlcollection.find_one({"url" : url})
@@ -94,6 +117,10 @@ class UrlCollectionService():
     
 import urlparse
 
+#===============================================================================
+# HostCollectionService
+# Service wrapper to the db collection HostCollection 
+#===============================================================================
 class HostCollectionService():
 
     client = None

@@ -31,6 +31,7 @@ class URLDocument():
 #===============================================================================
 class TransformedURL(URLDocument):
     result =None
+    classifier = None 
     
     def __init__(self,url,classitype,maintagitem,tagsArray, result):
         self.url=url

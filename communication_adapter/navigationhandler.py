@@ -13,6 +13,7 @@ from xml.etree  import ElementTree
 import difflib
 import constants.Constants as const
 from database import CacheAdapter as Cache
+from utility_services.AuthenticateService import AuthenticateService
 
 HTTP_PREFIX = "http://"
 HTTPS_PREFIX = "https://"
@@ -26,10 +27,9 @@ class NavigationHandler(tornado.web.RequestHandler):
     mirrored_url=""
      
     def get(self):
-        print "Hahahaaaaa"
 #        self.render("proxy.html")
         #Initial setup of cookie
-        if not self.get_secure_cookie(const.sessionID):
+        if not AuthenticateService.isVerified(self):
             #This means that the app id is not authenticated. Need to pass a error xml
             self.write("This means that the app id is not authenticated. Need to pass a error xml")
             
@@ -52,7 +52,7 @@ class NavigationHandler(tornado.web.RequestHandler):
                 try:
                     rawPage=urllib.urlopen(self.mirrored_url)  
                 except Exception,e:
-                    self.response.write(e)
+                    self.write(e)
                     return 
  
                 self.writeNavigationRaw(rawPage)
@@ -70,8 +70,12 @@ class NavigationHandler(tornado.web.RequestHandler):
         html.build()
         feed=rssreader.getFeed(webPage.getFeedLink())
         
-        if(len(feed) == 0):
+        print "FEED"
+        print(feed)
+        
+        if(feed is None or len(feed) == 0):
             statuscode = const.NO_FEED_ERROR_CODE
+        
         
         nxml = Nav2XML()
         tree = nxml.generateXML(statuscode,feed)
@@ -85,7 +89,7 @@ class NavigationHandler(tornado.web.RequestHandler):
         pageDoc = BeautifulSoup(rawPage)
         feed=rssreader.get_rssfeed(pageDoc)
         
-        if(len(feed) == 0):
+        if(feed is None or len(feed) == 0):
             statuscode = const.NO_FEED_ERROR_CODE
         
         nxml = Nav2XML()

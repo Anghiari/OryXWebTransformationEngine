@@ -6,57 +6,73 @@ Created on Jul 23, 2013
 
 from webclassifier.OryXdb import HostCollectionService,UrlCollectionService
 from TypeCollectionService import TypeCollectionService
+from TransformedCollectionService import TransformedCollectionService
 
+
+#===============================================================================
+# ClassifierFacade
+# separate concerns between the frontend requests and data layer
+#===============================================================================
 class ClassifierFacade(object):
-    '''
-    separate concerns between the frontend requests and data layer
-    '''
 
+
+    # db services
     host_dbservice = None
     type_dbservice = None
     url_dbservice = None
+    transformed_dbservice = None
     
     def __init__(self):
         self.host_dbservice = HostCollectionService()
         self.type_dbservice = TypeCollectionService()
         self.url_dbservice = UrlCollectionService()
+        self.transformed_dbservice = TransformedCollectionService()
     
-    
-    def getClassification(self,url):
+    #===========================================================================
+    # getURLClassification
+    # get the classification bruteforcingly from url collection
+    #===========================================================================
+    def getURLClassification(self,url):
         
-        return self.host_dbservice.GetUrlClassifcation(url)
+        return self.url_dbservice.GetUrlClassifcation(url)
         
         
+    #===========================================================================
+    # getClassificationForURl
+    # @return: dict a : {"provider": __, "classification": __}
+    #===========================================================================
     def getClassificationForURl(self,url):
         
+        a= dict()
         classification=self.host_dbservice.GetUrlClassifcation(url)
-        
+        a["provider"] = "host"
         urldoc=False
         
         if(classification is False):
-            return  self.url_dbservice.getUrlDocument(url)
-        else:
+            url_db=self.url_dbservice.getUrlDocument(url)
             
-            urldoc= URLDocument(url,classification,"","")
-        
-        return urldoc
+            if(url_db is not None):
+                classification=url_db.get("classification")
+                a["provider"] = "url"
+                                                                  
+        a["classification"]= classification
+         
+        #------------------------------------------------------------------------------ 
+        # Connect the orange DB here
+        # Require to the connect the Orange DB module here
+        #------------------------------------------------------------------------------ 
+           
+        return a
         
      
         
-from collections import deque
+    #===========================================================================
+    # insertToTotalDB
+    #===========================================================================
+    def insertToTotalDB(self, urldoc):
         
-class URLDocument():
-    url = None
-    classification = None
-    maintag = None
-    tags = None
-    
-    def __init__(self,url,classitype,maintagitem,tagsArray):
-        self.url=url
-        self.classification=classitype
-        self.maintag=maintagitem
-        self.tags=tagsArray
-        
+        self.url_dbservice.insertURLToCollection(urldoc, self.url_dbservice.frontendcollection)
+        self.url_dbservice.insertURLToCollection(urldoc, self.url_dbservice.frontendcollection)
     
     
         

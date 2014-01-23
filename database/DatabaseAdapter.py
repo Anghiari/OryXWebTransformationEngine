@@ -1,16 +1,20 @@
+import os
 import pdict
-import cPickle as Pickle
-from database.Singleton import Singleton
+from datetime import timedelta
 
-@Singleton
+# @Singleton
 class DatabaseAdapter():
 
     filename = None
     database = None
+    EXPIRE = 3600 #seconds
+    
     
     def __init__(self):
-        self.filename = 'cache.db'
-        self.database = pdict.PersistentDict(self.filename)
+        curDir = os.path.dirname(__file__)
+        filename = os.path.join(curDir, 'TempCache/newcache.db')
+        expireDelta = timedelta(seconds = self.EXPIRE)
+        self.database = pdict.PersistentDict(filename, expires=expireDelta)
     
     def isInSystem(self, app_id):
         print app_id in  self.database
@@ -33,10 +37,17 @@ class DatabaseAdapter():
     
     def addWebPage(self, webPage):
         if(webPage is not None and webPage.getUrl() is not None):
+            webPage.getHtmlPage().removeSoup()
             self.database[webPage.getUrl()] = webPage
             return True
         return  False
     
     def getWebPage(self, url):
-        if(url is not None):
-            return self.database[self.verify(url)]
+        if(url is not None and url in self.database):
+            webPage =  self.database[url]
+            if(webPage is not None):
+                return (webPage)
+        return None
+    
+        
+        

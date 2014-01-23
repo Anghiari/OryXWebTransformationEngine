@@ -17,7 +17,7 @@ class BlogArticle():
         
     def addContent(self, tag, attr, text):
         content = BlogArticleContent(tag, attr, text)
-        self.blogContent.append(content)
+        self.blogContent.append(content)        
         
     def getBlogArticle(self):
         return self.blogContent
@@ -31,23 +31,23 @@ class BlogArticle():
     
 class ErrorMessage():
 
-    message = ""
-    code = 0
+    message=""
+    code=0
     
 
-    def __init__(self, code, message):
-        self.message = message 
-        self.code = code
+    def __init__(self,code,message):
+        self.message=message 
+        self.code=code
         
-    def setMessage(self, msg):
-        self.message = msg 
+    def setMessage(self,msg):
+        self.message=msg 
         
     def getMessage(self):
         return self.message
     
     
-    def setCode(self, code):
-        self.message = code
+    def setCode(self,code):
+        self.message=code
         
     def getCode(self):
         return self.code

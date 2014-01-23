@@ -7,7 +7,7 @@ Created on Apr 27, 2013
 import xml.etree.ElementTree as ET
 
 def readXML(filepath):
-    # 'output/data/stats.xml'
+    #'output/data/stats.xml'
     tree = ET.parse()
     root = tree.getroot(filepath)
 
