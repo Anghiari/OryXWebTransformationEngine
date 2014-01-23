@@ -31,20 +31,17 @@ class IndexHandler(tornado.web.RequestHandler):
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-<<<<<<< .mine
             (r"/", HomeHandler),
             (r"/main", MainHandler),
             (r"/content", ContentHandler),
             (r"/nav", NavigationHandler),
             (r"/close", SessionHandler)
-=======
             (r"/", IndexHandler),
             (r"/api", HomeHandler),
             (r"/api/main", MainHandler),
             (r"/api/content", ContentHandler),
             (r"/api/nav", NavigationHandler),
             (r"/api/close",SessionHandler)
->>>>>>> .r288
         ]
         
 
